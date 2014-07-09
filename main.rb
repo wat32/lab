@@ -1,4 +1,4 @@
-#некоторые служебные функции
+#РЅРµРєРѕС‚РѕСЂС‹Рµ СЃР»СѓР¶РµР±РЅС‹Рµ С„СѓРЅРєС†РёРё
 def rand_male
     ['Man','Woman'][rand(0..1)]
 end
@@ -14,10 +14,10 @@ def random_txt(sz = rand(40)+15)
 end
 
 
-#Клас ролей
-# если нет переданных значений -делаем рандомные
+#РљР»Р°СЃ СЂРѕР»РµР№
+# РµСЃР»Рё РЅРµС‚ РїРµСЂРµРґР°РЅРЅС‹С… Р·РЅР°С‡РµРЅРёР№ -РґРµР»Р°РµРј СЂР°РЅРґРѕРјРЅС‹Рµ
 class Role
-#считаем общее количество ролей - для перехода по всем и создания имени роли
+#СЃС‡РёС‚Р°РµРј РѕР±С‰РµРµ РєРѕР»РёС‡РµСЃС‚РІРѕ СЂРѕР»РµР№ - РґР»СЏ РїРµСЂРµС…РѕРґР° РїРѕ РІСЃРµРј Рё СЃРѕР·РґР°РЅРёСЏ РёРјРµРЅРё СЂРѕР»Рё
    @@count_role=0
    attr_accessor :male, :age_range, :name
 
@@ -34,7 +34,7 @@ class Role
 
 end
 
-#задаем имя , возраст и пол
+#Р·Р°РґР°РµРј РёРјСЏ , РІРѕР·СЂР°СЃС‚ Рё РїРѕР»
 
 
 class Person
@@ -48,7 +48,7 @@ class Person
 
 end
 
-#Клас претендента
+#РљР»Р°СЃ РїСЂРµС‚РµРЅРґРµРЅС‚Р°
 class Applicant < Person
   @@count_applicant=0
   attr_accessor :speech_time, :performances, :votes
@@ -60,12 +60,12 @@ class Applicant < Person
     @performances={}
     @votes={}
   end
-#подходит ли роль ?
+#РїРѕРґС…РѕРґРёС‚ Р»Рё СЂРѕР»СЊ ?
   def can_role?(role)
     raise TypeError , 'not role' if role.class == Role.class
     role.age_valid?(@age) && role.male == male
   end
-#Выступление , возращается хэш и увеличиваем общее время выступлений
+#Р’С‹СЃС‚СѓРїР»РµРЅРёРµ , РІРѕР·СЂР°С‰Р°РµС‚СЃСЏ С…СЌС€ Рё СѓРІРµР»РёС‡РёРІР°РµРј РѕР±С‰РµРµ РІСЂРµРјСЏ РІС‹СЃС‚СѓРїР»РµРЅРёР№
 
   def speech (role,subj = random_string , txt = random_txt , performing = 5+rand(50) )
     @speech_time += performing
@@ -74,7 +74,7 @@ class Applicant < Person
 
   def speech_role(role)
     raise TypeError , 'not role' if role.class == Role.class
-#проверяем чтобы выступление по роли было один раз и возможность выступать по этой роли
+#РїСЂРѕРІРµСЂСЏРµРј С‡С‚РѕР±С‹ РІС‹СЃС‚СѓРїР»РµРЅРёРµ РїРѕ СЂРѕР»Рё Р±С‹Р»Рѕ РѕРґРёРЅ СЂР°Р· Рё РІРѕР·РјРѕР¶РЅРѕСЃС‚СЊ РІС‹СЃС‚СѓРїР°С‚СЊ РїРѕ СЌС‚РѕР№ СЂРѕР»Рё
     @performances[role.name]=speech(role) if @performances[role.name].nil? && can_role?(role)
     @votes[role.name]=0
   end
@@ -99,18 +99,18 @@ class Referee < Person
   end
 
 end  
-#создаем роли, соискателей и жюри
+#СЃРѕР·РґР°РµРј СЂРѕР»Рё, СЃРѕРёСЃРєР°С‚РµР»РµР№ Рё Р¶СЋСЂРё
 
 rls=(0..rand(10)+5).map{Role.new}
 apl=(0..rand(10)+5).map{Applicant.new}
 ref=(0..rand(10)+5).map{Referee.new}
 
-#Для каждой роли пробуем соискателей
+#Р”Р»СЏ РєР°Р¶РґРѕР№ СЂРѕР»Рё РїСЂРѕР±СѓРµРј СЃРѕРёСЃРєР°С‚РµР»РµР№
 rls.each do |r|
   apl.each {|a| a.speech_role(r)}
 end 
 
-#проводим голосование
+#РїСЂРѕРІРѕРґРёРј РіРѕР»РѕСЃРѕРІР°РЅРёРµ
 apl.each do |a|
   a.performances.each do |k,v|
     ref.each do |rl|
@@ -120,7 +120,7 @@ apl.each do |a|
     
   end
 end
-#Выводим лучшую роль и время speech
+#Р’С‹РІРѕРґРёРј Р»СѓС‡С€СѓСЋ СЂРѕР»СЊ Рё РІСЂРµРјСЏ speech
 apl.each do |a|
    (rl,vt)=a.votes.max_by{|k,v| v}.to_a
    if vt > 0 then 
